@@ -1,0 +1,6 @@
+.DS_Store
+.idea
+workspace
+bin
+go.sum
+*.egg-info
