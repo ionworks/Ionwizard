@@ -30,4 +30,9 @@ if __name__ == "__main__":
             if runPip.lower() == "true":
                 IonWorksWizard.install_library(package_name, address)
     except IndexError:
-        print("\nUsage:\n\tpython library_wizard.py <package name> <key> <install? true/false (optional)>")
+        print(
+            "\nUsage:\n"
+            "\tpython library_wizard.py "
+            "<package name> <key> "
+            "<install package, optional: true or false>"
+        )
