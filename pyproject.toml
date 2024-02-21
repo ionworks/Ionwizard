@@ -10,8 +10,11 @@ requires-python = ">=3.8"
 license = {text = "BSD 3-Clause License"}
 version = "0.0.0"
 dependencies = [
-    "pyyaml"
 ]
+
+[project.scripts]
+ionwizard-library = "ionwizard.library_wizard:run"
+ionwizard-container = "ionwizard.container_wizard:run"
 
 [tool.setuptools_scm]
 

@@ -18,7 +18,7 @@ class IonWorksWizard:
             print(f"\nInstallation failed for {lib_name}.\n")
 
 
-if __name__ == "__main__":
+def run():
     try:
         args = sys.argv[1:]
         package_name = args[0]
@@ -36,3 +36,7 @@ if __name__ == "__main__":
             "<package name> <key> "
             "<install package, optional: true or false>"
         )
+
+
+if __name__ == "__main__":
+    run()

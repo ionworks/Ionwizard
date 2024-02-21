@@ -4,3 +4,4 @@ workspace
 bin
 go.sum
 *.egg-info
+__pycache__
