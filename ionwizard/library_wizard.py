@@ -26,8 +26,8 @@ def run():
         address = IonWorksWizard.get_address(license_key)
         print(f"\nPackage URLs:\n\t{address}\n\n")
         if len(args) > 2:
-            runPip = args[2]
-            if runPip.lower() == "true":
+            run_pip = args[2]
+            if run_pip.lower() == "true":
                 IonWorksWizard.install_library(package_name, address)
     except IndexError:
         print(
