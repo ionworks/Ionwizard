@@ -1,7 +1,7 @@
 # Ionworks Installation Wizard
 
 Ionworks products are stored on private repositories. The software in
-this project is designed to help users access ionworks software.
+this project is designed to help users access Ionworks software.
 
 ## Installation
 
@@ -32,8 +32,8 @@ ionwizard-library <package name> <key> true
 
 ## Python libraries
 
-The Python packages produced by ionworks can be installed via pip.
-The ionworks packages are stored on a private server, but can be
+The Python packages produced by Ionworks can be installed via pip.
+The Ionworks packages are stored on a private server, but can be
 installed by using the "--index-url" argument for pip.
 
 ```bash
@@ -51,3 +51,23 @@ set to "true".
 ```bash
 python library_wizard.py <package name> <key> true
 ```
+
+### Pip configuration
+
+Ionworks python libraries can be installed from pyproject.toml and 
+requirements.txt files by configuring pip to use extra index URLs.
+
+Create a file named ```pip.conf``` and add the following lines:
+```
+[global]
+index-url = <URL from library_wizard.py>
+```
+
+The pip configuration file needs to be exported as an environment
+variable to take effect:
+```bash
+export PIP_CONFIG_FILE=pip.conf
+```
+
+Pip will then check for the libraries the Ionworks package servers
+before checking PyPi.
