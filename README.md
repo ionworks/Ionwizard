@@ -6,34 +6,49 @@ this project is designed to help users access Ionworks software.
 ## Installation
 
 The scripts in ionwizard can be run without installing the package, however,
-installation can add command line support.
+installation can add ionwizard to the command line interface.
 ```bash
 pip install .
 ```
 
-### Available commands
-
-Specific details and options for the installation scripts are detailed in their
-own sections, but the aliases are explained in this section.
-
-#### Library wizard
+## Library wizard
 
 The library installation wizard is used to install python packages from
 the ionworks package servers.
 
 Script command:
 ```bash
-python library_wizard.py <package name> <key> true
+python library_wizard.py <your_config_file>.yml
 ```
 Command line alias:
 ```bash
-ionwizard-library <package name> <key> true
+ionwizard-library <your_config_file>.yml
 ```
 
-## Python libraries
+### Configuration file
 
-The Python packages produced by Ionworks can be installed via pip.
-The Ionworks packages are stored on a private server, but can be
+Products licensed by ionworks can be directly installed by the library 
+wizard. Each package requires a product name, license key, and a flag to 
+indicate if the package should be installed.
+```yaml
+libraries:
+  - library: <Package name>
+    key: <license key>
+    install: True
+  - library: <Package name 2>
+    key: <license key 2>
+    install: True
+```
+If the package versions are going to be managed via a requirements file,
+then the install flag can be set to "False" to print the input required 
+for a manual installation. The library wizard will always install the 
+latest version of the packages, so the wizard can also be used to update 
+existing packages.
+
+### Pip installation
+
+The Python packages produced by ionworks can be installed via pip.
+The ionworks packages are stored on a private server, but can be
 installed by using the "--index-url" argument for pip.
 
 ```bash
@@ -42,25 +57,22 @@ pip install <package name> --index-url <package URL>
 
 The URLs for repository can be quite long, so the wizard can be
 used to generate the URLs based on the license key.
-```bash
-python library_wizard.py <package name> <key>
+```yaml
+libraries:
+  - library: <Package name>
+    key: <license key>
+    install: False
 ```
 
-To also install the library, the optional install flag can be
-set to "true".
-```bash
-python library_wizard.py <package name> <key> true
-```
+#### Pip configuration
 
-### Pip configuration
-
-Ionworks python libraries can be installed from pyproject.toml and 
-requirements.txt files by configuring pip to use extra index URLs.
+Ionworks python libraries can be installed from `pyproject.toml` and 
+`requirements.txt` files by configuring pip to use a different index URL.
 
 Create a file named ```pip.conf``` and add the following lines:
 ```
 [global]
-index-url = <URL from library_wizard.py>
+index-url = <URL from library wizard>
 ```
 
 The pip configuration file needs to be exported as an environment

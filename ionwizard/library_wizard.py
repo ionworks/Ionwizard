@@ -21,9 +21,11 @@ class IonWorksWizard:
     @staticmethod
     def install_from(config):
         for pack in config:
-            IonWorksWizard.install_library(
-                pack["library"], IonWorksWizard.get_address(pack["key"])
-            )
+            addr = IonWorksWizard.get_address(pack["key"])
+            if pack["install"] == "True":
+                IonWorksWizard.install_library(pack["library"], addr)
+            else:
+                print(f'\n{pack["library"]} --index-url {addr}\n')
 
     @staticmethod
     def process_config(file_name):
