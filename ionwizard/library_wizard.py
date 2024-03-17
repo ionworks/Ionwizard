@@ -40,7 +40,7 @@ def run():
     try:
         config_file = sys.argv[1]
         IonWorksWizard.install_from(IonWorksWizard.process_config(config_file))
-    except (IndexError, FileNotFoundError, KeyError):
+    except (IndexError, FileNotFoundError):
         print("\nUsage:\n\tpython library_wizard.py <config file>\n")
 
 
