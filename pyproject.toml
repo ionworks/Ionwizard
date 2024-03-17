@@ -5,10 +5,9 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "ionwizard"
 description = "Installation tools for Ionworks software"
-readme = { file = "README.md", content-type = "text/markdown" }
-requires-python = ">=3.8"
-license = {text = "BSD 3-Clause License"}
-version = "0.0.0"
+dynamic = ["version", "readme"]
+license = {file = "LICENSE.md"}
+requires-python = ">=3.10"
 dependencies = [
     "pyyaml"
 ]
@@ -21,3 +20,6 @@ ionwizard-container = "ionwizard.container_wizard:run"
 
 [tool.setuptools.packages.find]
 include = ["ionwizard"]
+
+[tool.setuptools.dynamic]
+readme = {file = ["README.md"], content-type = "text/markdown"}
