@@ -6,7 +6,9 @@ import os
 
 
 def test_bad_config():
-    config_file = {"bad_name": [{'library': 'package1', 'key': 'XXX-YYY-ZZZ', 'install': False}]}
+    config_file = {
+        "bad_name": [{"library": "package1", "key": "XXX-YYY-ZZZ", "install": False}]
+    }
     with TemporaryDirectory() as dir_name:
         file_name = os.path.join(dir_name, "test.yml")
         with open(file_name, "w") as f:
