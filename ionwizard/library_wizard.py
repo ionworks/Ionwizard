@@ -1,5 +1,6 @@
 import sys
 import subprocess
+import yaml
 
 
 class IonWorksWizard:
@@ -24,25 +25,21 @@ class IonWorksWizard:
                 pack["library"], IonWorksWizard.get_address(pack["key"])
             )
 
+    @staticmethod
+    def process_config(file_name):
+        with open(file_name, "r") as f:
+            try:
+                return yaml.safe_load(f)["libraries"]
+            except KeyError:
+                print("\nInvalid configuration file.\n")
+
 
 def run():
     try:
-        args = sys.argv[1:]
-        package_name = args[0]
-        license_key = args[1]
-        address = IonWorksWizard.get_address(license_key)
-        print(f"\nPackage URLs:\n\t{address}\n\n")
-        if len(args) > 2:
-            run_pip = args[2]
-            if run_pip.lower() == "true":
-                IonWorksWizard.install_library(package_name, address)
-    except IndexError:
-        print(
-            "\nUsage:\n"
-            "\tpython library_wizard.py "
-            "<package name> <key> "
-            "<install package, optional: true or false>"
-        )
+        config_file = sys.argv[1]
+        IonWorksWizard.install_from(IonWorksWizard.process_config(config_file))
+    except (IndexError, FileNotFoundError, KeyError):
+        print("\nUsage:\n\tpython library_wizard.py <config file>\n")
 
 
 if __name__ == "__main__":
