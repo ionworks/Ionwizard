@@ -17,6 +17,13 @@ class IonWorksWizard:
         if err != 0:
             print(f"\nInstallation failed for {lib_name}.\n")
 
+    @staticmethod
+    def install_from(config):
+        for pack in config:
+            IonWorksWizard.install_library(
+                pack["library"], IonWorksWizard.get_address(pack["key"])
+            )
+
 
 def run():
     try:
