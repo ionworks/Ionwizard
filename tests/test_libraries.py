@@ -15,4 +15,3 @@ def test_bad_config():
             yaml.safe_dump(config_file, f)
         with pytest.raises(KeyError):
             IonWorksWizard.process_config(file_name)
-
