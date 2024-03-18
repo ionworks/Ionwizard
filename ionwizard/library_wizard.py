@@ -33,7 +33,7 @@ class IonWorksWizard:
             try:
                 return yaml.safe_load(f)["libraries"]
             except KeyError:
-                raise KeyError("Invalid configuration file.")
+                raise ValueError("Invalid configuration file.")
 
 
 def run():

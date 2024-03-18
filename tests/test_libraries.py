@@ -13,5 +13,5 @@ def test_bad_config():
         file_name = os.path.join(dir_name, "test.yml")
         with open(file_name, "w") as f:
             yaml.safe_dump(config_file, f)
-        with pytest.raises(KeyError):
+        with pytest.raises(ValueError):
             IonWorksWizard.process_config(file_name)
