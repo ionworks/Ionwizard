@@ -5,3 +5,4 @@ bin
 go.sum
 *.egg-info
 __pycache__
+*.tar.gz
