@@ -23,7 +23,7 @@ class IonWorksWizard:
     @staticmethod
     def load_image(product):
         zip_name = IonWorksWizard.get_zip_name(product)
-        err = subprocess.call(["docker", "load", "<", zip_name])
+        err = subprocess.call([f"docker load < {zip_name}"], shell=True)
         if err != 0:
             raise RuntimeError(f"\nDocker loading failed for {product}.\n")
 
@@ -38,8 +38,8 @@ class IonWorksWizard:
                 product.replace("/", ""),
                 "-p",
                 "8888:8888",
-                "-e" "IONWORKS_LICENSE_KEY=",
-                key,
+                "-e",
+                f"IONWORKS_LICENSE_KEY={key}",
                 f"{product}:{version}",
             ]
         )
@@ -48,11 +48,14 @@ class IonWorksWizard:
 
     @staticmethod
     def install_from(config):
-        for pack in config:
-            addr = IonWorksWizard.get_address(pack["version"], pack["product"])
-            IonWorksWizard.fetch_image(pack["product"], addr, f"license:{pack['key']}")
-            IonWorksWizard.load_image(pack["product"])
-            IonWorksWizard.load_image(pack["product"])
+        if isinstance(config, list):
+            raise ValueError(
+                "Invalid configuration file. Only 1 docker image can be specified."
+            )
+        addr = IonWorksWizard.get_address(config["version"], config["product"])
+        IonWorksWizard.fetch_image(config["product"], addr, f"license:{config['key']}")
+        IonWorksWizard.load_image(config["product"])
+        IonWorksWizard.run_image(config["product"], config["key"], config["version"])
 
     @staticmethod
     def process_config(file_name):
