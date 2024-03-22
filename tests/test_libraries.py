@@ -1,4 +1,4 @@
-from ionwizard.library_wizard import IonWorksWizard
+from ionwizard.library_wizard import IonWorksPipWizard
 import pytest
 from tempfile import TemporaryDirectory
 import yaml
@@ -14,4 +14,4 @@ def test_bad_config():
         with open(file_name, "w") as f:
             yaml.safe_dump(config_file, f)
         with pytest.raises(ValueError):
-            IonWorksWizard.process_config(file_name)
+            IonWorksPipWizard.process_config(file_name)

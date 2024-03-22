@@ -3,7 +3,7 @@ import subprocess
 import yaml
 
 
-class IonWorksWizard:
+class IonWorksImageWizard:
     @staticmethod
     def get_zip_name(product: str):
         return product.replace("/", "_") + ".tar.gz"
@@ -11,7 +11,7 @@ class IonWorksWizard:
     @staticmethod
     def get_address(version: str, library: str):
         head = "https://get.keygen.sh/ion-works-com/"
-        tail = IonWorksWizard.get_zip_name(library)
+        tail = IonWorksImageWizard.get_zip_name(library)
         return head + version + "/" + tail
 
     @staticmethod
@@ -22,7 +22,7 @@ class IonWorksWizard:
 
     @staticmethod
     def load_image(product):
-        zip_name = IonWorksWizard.get_zip_name(product)
+        zip_name = IonWorksImageWizard.get_zip_name(product)
         err = subprocess.call([f"docker load < {zip_name}"], shell=True)
         if err != 0:
             raise RuntimeError(f"\nDocker loading failed for {product}.\n")
@@ -52,10 +52,14 @@ class IonWorksWizard:
             raise ValueError(
                 "Invalid configuration file. Only 1 docker image can be specified."
             )
-        addr = IonWorksWizard.get_address(config["version"], config["product"])
-        IonWorksWizard.fetch_image(config["product"], addr, f"license:{config['key']}")
-        IonWorksWizard.load_image(config["product"])
-        IonWorksWizard.run_image(config["product"], config["key"], config["version"])
+        addr = IonWorksImageWizard.get_address(config["version"], config["product"])
+        IonWorksImageWizard.fetch_image(
+            config["product"], addr, f"license:{config['key']}"
+        )
+        IonWorksImageWizard.load_image(config["product"])
+        IonWorksImageWizard.run_image(
+            config["product"], config["key"], config["version"]
+        )
 
     @staticmethod
     def process_config(file_name):
@@ -69,7 +73,9 @@ class IonWorksWizard:
 def run():
     try:
         config_file = sys.argv[1]
-        IonWorksWizard.install_from(IonWorksWizard.process_config(config_file))
+        IonWorksImageWizard.install_from(
+            IonWorksImageWizard.process_config(config_file)
+        )
     except (IndexError, FileNotFoundError):
         print("\nUsage:\n\tpython container_wizard.py <config file>\n")
 

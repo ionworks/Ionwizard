@@ -3,7 +3,7 @@ import subprocess
 import yaml
 
 
-class IonWorksWizard:
+class IonWorksPipWizard:
     @staticmethod
     def get_address(key: str):
         head = "https://license:"
@@ -21,9 +21,9 @@ class IonWorksWizard:
     @staticmethod
     def install_from(config):
         for pack in config:
-            addr = IonWorksWizard.get_address(pack["key"])
+            addr = IonWorksPipWizard.get_address(pack["key"])
             if pack["install"] == "True":
-                IonWorksWizard.install_library(pack["library"], addr)
+                IonWorksPipWizard.install_library(pack["library"], addr)
             else:
                 print(f'\n{pack["library"]} --index-url {addr}\n')
 
@@ -39,7 +39,7 @@ class IonWorksWizard:
 def run():
     try:
         config_file = sys.argv[1]
-        IonWorksWizard.install_from(IonWorksWizard.process_config(config_file))
+        IonWorksPipWizard.install_from(IonWorksPipWizard.process_config(config_file))
     except (IndexError, FileNotFoundError):
         print("\nUsage:\n\tpython library_wizard.py <config file>\n")
 
