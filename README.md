@@ -33,10 +33,10 @@ indicate if the package should be installed.
 ```yaml
 libraries:
   - library: <Package name>
-    key: <license key>
+    key: <License key>
     install: True
   - library: <Package name 2>
-    key: <license key 2>
+    key: <License key 2>
     install: True
 ```
 If the package versions are going to be managed via a requirements file,
@@ -83,3 +83,33 @@ export PIP_CONFIG_FILE=pip.conf
 
 Pip will then check for the libraries the Ionworks package servers
 before checking PyPi.
+
+## Container wizard
+
+The container installation wizard is used to run Docker images from
+the ionworks package servers.
+
+Script command:
+```bash
+python container_wizard.py <your_config_file>.yml
+```
+Command line alias:
+```bash
+ionwizard-container_wizard <your_config_file>.yml
+```
+
+Ionwizard will download the image, create a container, and start the
+software.
+
+### Configuration file
+
+Containerized products licensed by ionworks can be directly installed by the 
+container wizard. Each package requires a product name, version, and a license
+key.
+```yaml
+docker:
+  product: <Package name>
+  version: <Version>
+  key: <License key>
+```
+Only a single image can be specified in this configuration.
