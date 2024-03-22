@@ -99,7 +99,7 @@ ionwizard-container_wizard <your_config_file>.yml
 ```
 
 Ionwizard will download the image, create a container, and start the
-software.
+software. The image can be access here: http://localhost:8888/tree
 
 ### Configuration file
 
