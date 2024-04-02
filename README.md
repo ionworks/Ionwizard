@@ -18,5 +18,5 @@ in the [Quick start guide](Quick_start/library_installation.md)
 
 ## Container wizard
 
-Installation instructions for pre-built Docker containers can be found
+Instructions for using Ionworks pre-built Docker containers can be found
 in the [Quick start guide](Quick_start/image_installation.md)
