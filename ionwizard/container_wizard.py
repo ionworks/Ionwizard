@@ -51,7 +51,7 @@ class IonWorksImageWizard:
             ]
         )
         if err not in acceptable_codes:
-            raise RuntimeError(f"\nFailed to start {product}, error code: {err}.\n")
+            raise RuntimeError(f"\nFailed to start {product}.\n")
 
     @staticmethod
     def install_from(config):
