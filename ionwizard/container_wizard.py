@@ -35,6 +35,7 @@ class IonWorksImageWizard:
 
     @staticmethod
     def run_image(product, key, version):
+        acceptable_codes = [0, 2]
         err = subprocess.call(
             [
                 "docker",
@@ -49,7 +50,7 @@ class IonWorksImageWizard:
                 f"{product}:{version}",
             ]
         )
-        if err != 0:
+        if err not in acceptable_codes:
             raise RuntimeError(f"\nFailed to start {product}.\n")
 
     @staticmethod
