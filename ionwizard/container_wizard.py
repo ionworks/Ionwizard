@@ -60,7 +60,7 @@ class IonWorksImageWizard:
             [
                 "docker",
                 "start",
-                "-a",
+                "-ai",
                 product.replace("/", ""),
             ]
         )
