@@ -6,6 +6,8 @@ from tempfile import TemporaryDirectory
 
 
 class IonWorksImageWizard:
+    acceptable_codes = [0, 2]
+
     @staticmethod
     def get_zip_name(product: str):
         return product.replace("/", "_") + ".tar.gz"
@@ -35,7 +37,6 @@ class IonWorksImageWizard:
 
     @staticmethod
     def run_image(product, key, version):
-        acceptable_codes = [0, 2]
         err = subprocess.call(
             [
                 "docker",
@@ -50,8 +51,30 @@ class IonWorksImageWizard:
                 f"{product}:{version}",
             ]
         )
-        if err not in acceptable_codes:
+        if err not in IonWorksImageWizard.acceptable_codes:
             raise RuntimeError(f"\nFailed to start {product}.\n")
+
+    @staticmethod
+    def restart_image(product):
+        try:
+            err = subprocess.call(
+                [
+                    "docker",
+                    "start",
+                    "-a",
+                    product.replace("/", ""),
+                ]
+            )
+            if err not in IonWorksImageWizard.acceptable_codes:
+                raise RuntimeError(f"\nFailed to start {product}.\n")
+        except KeyboardInterrupt:
+            subprocess.call(
+                [
+                    "docker",
+                    "stop",
+                    product.replace("/", ""),
+                ]
+            )
 
     @staticmethod
     def install_from(config):
@@ -59,10 +82,13 @@ class IonWorksImageWizard:
             raise ValueError(
                 "Invalid configuration file. Only 1 docker image can be specified."
             )
-        IonWorksImageWizard.make_container(config)
-        IonWorksImageWizard.run_image(
-            config["product"], config["key"], config["version"]
-        )
+        if config["restart"]:
+            IonWorksImageWizard.restart_image(config["product"])
+        else:
+            IonWorksImageWizard.make_container(config)
+            IonWorksImageWizard.run_image(
+                config["product"], config["key"], config["version"]
+            )
 
     @staticmethod
     def make_container(config):

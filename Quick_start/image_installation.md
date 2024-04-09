@@ -11,7 +11,7 @@ python container_wizard.py <your_config_file>.yml
 ```
 Command line alias:
 ```bash
-ionwizard-container_wizard <your_config_file>.yml
+ionwizard-container <your_config_file>.yml
 ```
 
 Ionwizard will download the image, create a container, and start the
@@ -32,10 +32,26 @@ docker:
   product: <Package name>
   version: <Version>
   key: <License key>
+  restart: False
 ```
 Only a single image can be specified in this configuration.
 
 ## Usage
+
+### Restarting a container
+
+If a container has been used already then it can be restarted by updating the
+restart value in the configuration file:
+```yaml
+docker:
+  product: <Package name>
+  version: <Version>
+  key: <License key>
+  restart: True
+```
+Setting restart to `True` will skip the download of a new container and 
+restart the existing one instead. This will preserve any data, notebooks, or 
+files created inside the container.
 
 ### Loading data
 
