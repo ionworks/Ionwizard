@@ -11,7 +11,7 @@ python container_wizard.py <your_config_file>.yml
 ```
 Command line alias:
 ```bash
-ionwizard-container_wizard <your_config_file>.yml
+ionwizard-container <your_config_file>.yml
 ```
 
 Ionwizard will download the image, create a container, and start the
