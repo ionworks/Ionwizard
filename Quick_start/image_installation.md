@@ -49,7 +49,7 @@ docker:
   key: <License key>
   restart: True
 ```
-Setting restart to True will skip the download of a new container and 
+Setting restart to `True` will skip the download of a new container and 
 restart the existing one instead. This will preserve any data, notebooks, or 
 files created inside the container.
 
