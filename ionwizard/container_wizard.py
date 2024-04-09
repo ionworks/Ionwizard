@@ -54,15 +54,32 @@ class IonWorksImageWizard:
             raise RuntimeError(f"\nFailed to start {product}.\n")
 
     @staticmethod
+    def restart_image(product):
+        acceptable_codes = [0, 2]
+        err = subprocess.call(
+            [
+                "docker",
+                "start",
+                "-a",
+                product.replace("/", ""),
+            ]
+        )
+        if err not in acceptable_codes:
+            raise RuntimeError(f"\nFailed to start {product}.\n")
+
+    @staticmethod
     def install_from(config):
         if isinstance(config, list):
             raise ValueError(
                 "Invalid configuration file. Only 1 docker image can be specified."
             )
-        IonWorksImageWizard.make_container(config)
-        IonWorksImageWizard.run_image(
-            config["product"], config["key"], config["version"]
-        )
+        if config["restart"]:
+            IonWorksImageWizard.restart_image(config["product"])
+        else:
+            IonWorksImageWizard.make_container(config)
+            IonWorksImageWizard.run_image(
+                config["product"], config["key"], config["version"]
+            )
 
     @staticmethod
     def make_container(config):
