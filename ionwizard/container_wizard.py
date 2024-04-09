@@ -56,16 +56,25 @@ class IonWorksImageWizard:
 
     @staticmethod
     def restart_image(product):
-        err = subprocess.call(
-            [
-                "docker",
-                "start",
-                "-ai",
-                product.replace("/", ""),
-            ]
-        )
-        if err not in IonWorksImageWizard.acceptable_codes:
-            raise RuntimeError(f"\nFailed to start {product}.\n")
+        try:
+            err = subprocess.call(
+                [
+                    "docker",
+                    "start",
+                    "-a",
+                    product.replace("/", ""),
+                ]
+            )
+            if err not in IonWorksImageWizard.acceptable_codes:
+                raise RuntimeError(f"\nFailed to start {product}.\n")
+        except KeyboardInterrupt:
+            subprocess.call(
+                [
+                    "docker",
+                    "stop",
+                    product.replace("/", ""),
+                ]
+            )
 
     @staticmethod
     def install_from(config):
