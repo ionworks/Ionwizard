@@ -2,6 +2,7 @@ import os
 import sys
 import subprocess
 import yaml
+import webbrowser
 from tempfile import TemporaryDirectory
 
 
@@ -83,12 +84,18 @@ class IonWorksImageWizard:
                 "Invalid configuration file. Only 1 docker image can be specified."
             )
         if config["restart"]:
+            IonWorksImageWizard.open_browser()
             IonWorksImageWizard.restart_image(config["product"])
         else:
             IonWorksImageWizard.make_container(config)
+            IonWorksImageWizard.open_browser()
             IonWorksImageWizard.run_image(
                 config["product"], config["key"], config["version"]
             )
+
+    @staticmethod
+    def open_browser():
+        webbrowser.open_new(r"http://localhost:8888/tree")
 
     @staticmethod
     def make_container(config):
