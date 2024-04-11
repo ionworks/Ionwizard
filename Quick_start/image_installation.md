@@ -32,7 +32,7 @@ General:
 - Docker must be installed and running to use the containers.
 
 MacOS:
-- The [Rosetta](https://developer.apple.com/documentation/apple-silicon/about-the-rosetta-translation-environment) compatibility library is needed to get good 
+- The [Rosetta][ROSETTA_LINK] compatibility library is needed to get good 
   performance with Docker on systems using Apple Silicon.
 - Using Rosetta with Docker may require updating to the newest version of 
   Docker.
@@ -75,3 +75,6 @@ Data can be loaded into the containers by using the following commands:
 docker cp <path/to/your/data/directory> <container name>:/home/ionworks/data
 ```
 The entire directory will then be copied to the container's data directory.
+
+
+[ROSETTA_LINK]: https://developer.apple.com/documentation/apple-silicon/about-the-rosetta-translation-environment
