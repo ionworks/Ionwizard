@@ -30,8 +30,7 @@ class IonWorksImageWizard:
     def load_image(product, location):
         zip_name = IonWorksImageWizard.get_zip_name(product)
         err = subprocess.call(
-            [f"docker load < {os.path.join(location, zip_name)}"], shell=True
-        )
+            ["docker", "load", "-i", os.path.join(location, zip_name)])
         if err != 0:
             raise RuntimeError(f"\nDocker loading failed for {product}.\n")
 
@@ -93,6 +92,7 @@ class IonWorksImageWizard:
     @staticmethod
     def make_container(config):
         with TemporaryDirectory() as image_dir:
+            image_dir = ""
             addr = IonWorksImageWizard.get_address(config["version"], config["product"])
             IonWorksImageWizard.fetch_image(
                 config["product"], addr, f"license:{config['key']}", image_dir
