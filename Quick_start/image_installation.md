@@ -29,7 +29,7 @@ ionworks container.
 
 General:
 - Curl is required to fetch the Docker image. While curl should be installed 
-  on most systems. Older operating systems might require a manual install.
+  on most systems, older operating systems might require a manual install.
 - Docker must be installed and running to use the containers.
 
 MacOS:
