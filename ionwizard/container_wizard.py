@@ -46,7 +46,7 @@ class IonWorksImageWizard:
                 "--name",
                 product.replace("/", ""),
                 "-p",
-                "8888:8888",
+                "4040:8888",
                 "-e",
                 f"IONWORKS_LICENSE_KEY={key}",
                 f"{product}:{version}",
@@ -95,7 +95,7 @@ class IonWorksImageWizard:
 
     @staticmethod
     def open_browser():
-        webbrowser.open_new(r"http://localhost:8888/tree")
+        webbrowser.open_new(r"http://localhost:4040/tree")
 
     @staticmethod
     def make_container(config):
