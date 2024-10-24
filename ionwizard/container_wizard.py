@@ -2,6 +2,7 @@ import os
 import sys
 import subprocess
 import yaml
+import webbrowser
 from tempfile import TemporaryDirectory
 
 
@@ -30,7 +31,7 @@ class IonWorksImageWizard:
     def load_image(product, location):
         zip_name = IonWorksImageWizard.get_zip_name(product)
         err = subprocess.call(
-            [f"docker load < {os.path.join(location, zip_name)}"], shell=True
+            ["docker", "load", "-i", os.path.join(location, zip_name)]
         )
         if err != 0:
             raise RuntimeError(f"\nDocker loading failed for {product}.\n")
@@ -45,7 +46,7 @@ class IonWorksImageWizard:
                 "--name",
                 product.replace("/", ""),
                 "-p",
-                "8888:8888",
+                "4040:8888",
                 "-e",
                 f"IONWORKS_LICENSE_KEY={key}",
                 f"{product}:{version}",
@@ -83,12 +84,18 @@ class IonWorksImageWizard:
                 "Invalid configuration file. Only 1 docker image can be specified."
             )
         if config["restart"]:
+            IonWorksImageWizard.open_browser()
             IonWorksImageWizard.restart_image(config["product"])
         else:
             IonWorksImageWizard.make_container(config)
+            IonWorksImageWizard.open_browser()
             IonWorksImageWizard.run_image(
                 config["product"], config["key"], config["version"]
             )
+
+    @staticmethod
+    def open_browser():
+        webbrowser.open_new(r"http://localhost:4040/tree")
 
     @staticmethod
     def make_container(config):
