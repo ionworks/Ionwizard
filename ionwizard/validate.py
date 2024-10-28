@@ -20,11 +20,23 @@ def get_library_key(library_name):
     return None
 
 
-def license_check(library_name):
+def library(library_name, custom_library_key=None):
     """
     Check if the license for the library is valid.
+
+    Parameters:
+    -----------
+    library_name: str
+        The name of the library to check the license for.
+    custom_library_key: str, optional
+        The library key to use for the license check. If not provided, the library key
+        will be retrieved from the library configuration.
     """
-    library_key = get_library_key(library_name)
+    if custom_library_key is not None:
+        library_key = custom_library_key
+    else:
+        library_key = get_library_key(library_name)
+
     if library_key is None:
         return {"success": False, "message": "Error: No license key found"}
 
