@@ -17,10 +17,27 @@ ionwizard-container <your_config_file>.yml
 Ionwizard will download the image, create a container, and start the
 software. The image can be access here: http://localhost:8888/tree
 
+## System requirements
+
 ### Docker
 
-Ionwizard creates the containers using Docker. The Docker daemon needs to be
-running to use the container wizard functionality.
+Ionwizard creates and runs containerized versions of ionworks software using 
+[Docker]. Docker needs to be running in the background in order to use an 
+ionworks container.
+
+## Troubleshooting
+
+General:
+- Curl is required to fetch the Docker image. While curl should be installed 
+  on most systems, older operating systems might require a manual install.
+- Docker must be installed and running to use the containers.
+
+MacOS:
+- The [Rosetta] compatibility library is needed to get good 
+  performance with Docker on systems using Apple Silicon.
+- To use Rosetta with Docker, open Docker Desktop and go to settings, then
+  check the box "Use Rosetta for x86_64/amd64 emulation on Apple Silicon". 
+  This may require updating to the newest version of Docker.
 
 ### Configuration file
 
@@ -60,3 +77,7 @@ Data can be loaded into the containers by using the following commands:
 docker cp <path/to/your/data/directory> <container name>:/home/ionworks/data
 ```
 The entire directory will then be copied to the container's data directory.
+
+
+[Docker]: https://www.docker.com/products/docker-desktop/
+[Rosetta]: https://developer.apple.com/documentation/apple-silicon/about-the-rosetta-translation-environment
