@@ -11,6 +11,7 @@ requires-python = ">=3.10"
 dependencies = [
     "pyyaml",
     "platformdirs",
+    "requests",
 ]
 
 [project.optional-dependencies]
