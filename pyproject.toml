@@ -12,6 +12,7 @@ dependencies = [
     "pyyaml",
     "platformdirs",
     "requests",
+    "py-machineid",
 ]
 
 [project.optional-dependencies]
