@@ -20,7 +20,7 @@ def get_library_key(library_name):
     return None
 
 
-def library(library_name, custom_library_key=None):
+def license_check(library_name, custom_library_key=None):
     """
     Check if the license for the library is valid.
 
