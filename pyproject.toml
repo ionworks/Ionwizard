@@ -30,4 +30,5 @@ ionwizard-container = "ionwizard.container_wizard:run"
 include = ["ionwizard"]
 
 [tool.setuptools.dynamic]
+version = {attr = "ionwizard.version.__version__"}
 readme = {file = ["README.md"], content-type = "text/markdown"}
