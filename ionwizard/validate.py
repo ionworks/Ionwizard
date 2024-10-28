@@ -2,7 +2,7 @@ import platformdirs
 import yaml
 from pathlib import Path
 import requests
-from .library_wizard import KEYGEN_ACCOUNT_ID
+from ionwizard.env_variables import KEYGEN_ACCOUNT_ID
 
 
 def get_library_key(library_name):

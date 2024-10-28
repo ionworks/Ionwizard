@@ -5,7 +5,7 @@ from platformdirs import user_config_dir
 from pathlib import Path
 import machineid
 import uuid
-from .env_variables import KEYGEN_ACCOUNT_ID
+from ionwizard.env_variables import KEYGEN_ACCOUNT_ID
 
 
 class IonWorksPipWizard:
