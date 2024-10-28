@@ -27,7 +27,7 @@ jobs:
       - name: Update version
         run: |
           export RELEASE_VERSION=$(echo ${{ github.ref_name }} | sed -e 's/v//g')
-          echo "__version__ = \"$RELEASE_VERSION\"" > ionworksmetrics/version.py
+          echo "__version__ = \"$RELEASE_VERSION\"" > ionwizard/version.py
       - name: Build wheel
         run: |
           pip wheel . --no-deps -w deploy
