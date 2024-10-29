@@ -13,6 +13,7 @@ dependencies = [
     "platformdirs",
     "requests",
     "py-machineid",
+    "toml",
 ]
 
 [project.optional-dependencies]
@@ -24,6 +25,7 @@ dev = [
 [project.scripts]
 ionwizard-library = "ionwizard.library_wizard:run"
 ionwizard-container = "ionwizard.container_wizard:run"
+ionwizard-install-local = "ionwizard.install_local:run"
 
 [tool.setuptools_scm]
 
