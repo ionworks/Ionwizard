@@ -1,4 +1,4 @@
-from ionwizard.validate import get_library_key, library
+from ionwizard.validate import get_library_key, license_check
 from tempfile import TemporaryDirectory
 import yaml
 import os
@@ -37,7 +37,7 @@ def test_validate(mocker):
         ),
     )
 
-    result = library("testlib")
+    result = license_check("testlib")
     assert result == {"success": True, "message": "License key is valid"}
 
     mocker.patch("ionwizard.validate.get_library_key", return_value="EXPIRED-KEY-123")
@@ -48,7 +48,7 @@ def test_validate(mocker):
         ),
     )
 
-    result = library("testlib")
+    result = license_check("testlib")
     assert result == {"success": False, "message": "Error: License key expired"}
 
     mocker.patch("ionwizard.validate.get_library_key", return_value="INVALID-KEY-123")
@@ -59,13 +59,13 @@ def test_validate(mocker):
         ),
     )
 
-    result = library("testlib")
+    result = license_check("testlib")
     assert result == {"success": False, "message": "Error: Invalid license key"}
 
     mocker.patch("ionwizard.validate.get_library_key", return_value="VALID-KEY-123")
     mocker.patch("requests.post", return_value=mocker.Mock(status_code=400))
 
-    result = library("testlib")
+    result = license_check("testlib")
     assert result == {
         "success": False,
         "message": "Error: Failed to validate license key",

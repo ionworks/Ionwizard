@@ -5,7 +5,7 @@ from platformdirs import user_config_dir
 from pathlib import Path
 import machineid
 import uuid
-from .env_variables import KEYGEN_ACCOUNT_ID
+from ionwizard.env_variables import KEYGEN_ACCOUNT_ID
 
 
 class IonWorksPipWizard:
@@ -46,11 +46,8 @@ class IonWorksPipWizard:
         config_dir.mkdir(parents=True, exist_ok=True)
         config_path = config_dir / "config.yml"
 
-        # Add a user id if it is not already present
         if "user_id" not in config:
             config["user_id"] = str(uuid.uuid4())
-
-        # Override the machine id with the current machine id
         config["machine_id"] = machineid.id()
 
         print(f"\nSaving configuration to {config_path}\n")
@@ -63,7 +60,7 @@ def run():
     try:
         config_file = sys.argv[1]
         processed_config = IonWorksPipWizard.process_config(config_file)
-        # IonWorksPipWizard.install_from(processed_config)
+        IonWorksPipWizard.install_from(processed_config)
         IonWorksPipWizard.save_config(processed_config)
     except (IndexError, FileNotFoundError):
         print("\nUsage:\n\tpython library_wizard.py <config file>\n")
