@@ -1,6 +1,11 @@
 import sys
 import subprocess
 import yaml
+from platformdirs import user_config_dir
+from pathlib import Path
+import machineid
+import uuid
+from ionwizard.env_variables import KEYGEN_ACCOUNT_ID
 
 
 class IonWorksPipWizard:
@@ -8,7 +13,7 @@ class IonWorksPipWizard:
     def get_address(key: str):
         head = "https://license:"
         middle = "@api.keygen.sh/v1/accounts/"
-        account = "b1b31816-7a41-4fc0-8dd3-a957d1f7bef3"
+        account = KEYGEN_ACCOUNT_ID
         tail = "/engines/pypi/simple"
         return head + key + middle + account + tail
 
@@ -20,26 +25,43 @@ class IonWorksPipWizard:
 
     @staticmethod
     def install_from(config):
-        for pack in config:
-            addr = IonWorksPipWizard.get_address(pack["key"])
-            if pack["install"]:
-                IonWorksPipWizard.install_library(pack["library"], addr)
+        for library in config["libraries"]:
+            addr = IonWorksPipWizard.get_address(library["key"])
+            if library["install"]:
+                IonWorksPipWizard.install_library(library["library"], addr)
             else:
-                print(f'\n{pack["library"]} --index-url {addr}\n')
+                print(f'\n{library["library"]} --index-url {addr}\n')
 
     @staticmethod
     def process_config(file_name):
         with open(file_name, "r") as f:
-            try:
-                return yaml.safe_load(f)["libraries"]
-            except KeyError:
-                raise ValueError("Invalid configuration file.")
+            config = yaml.safe_load(f)
+        if "libraries" not in config:
+            raise ValueError("Invalid configuration file.")
+        return config
+
+    @staticmethod
+    def save_config(config):
+        config_dir = Path(user_config_dir("ionworks"))
+        config_dir.mkdir(parents=True, exist_ok=True)
+        config_path = config_dir / "config.yml"
+
+        if "user_id" not in config:
+            config["user_id"] = str(uuid.uuid4())
+        config["machine_id"] = machineid.id()
+
+        print(f"\nSaving configuration to {config_path}\n")
+
+        with open(config_path, "w") as f:
+            yaml.dump({"ionworks": config}, f)
 
 
 def run():
     try:
         config_file = sys.argv[1]
-        IonWorksPipWizard.install_from(IonWorksPipWizard.process_config(config_file))
+        processed_config = IonWorksPipWizard.process_config(config_file)
+        IonWorksPipWizard.install_from(processed_config)
+        IonWorksPipWizard.save_config(processed_config)
     except (IndexError, FileNotFoundError):
         print("\nUsage:\n\tpython library_wizard.py <config file>\n")
 

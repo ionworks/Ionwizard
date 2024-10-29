@@ -10,11 +10,15 @@ license = {file = "LICENSE.md"}
 requires-python = ">=3.10"
 dependencies = [
     "pyyaml",
+    "platformdirs",
+    "requests",
+    "py-machineid",
 ]
 
 [project.optional-dependencies]
 dev = [
     "pytest",
+    "pytest-mock",
 ]
 
 [project.scripts]
