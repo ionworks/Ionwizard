@@ -1,3 +1,4 @@
+import sys
 import platformdirs
 import yaml
 from pathlib import Path
@@ -5,18 +6,25 @@ import requests
 from ionwizard.env_variables import KEYGEN_ACCOUNT_ID
 
 
-def get_library_key(library_name):
-    """
-    Get the API key from the library configuration.
-    """
+def read_config_libraries():
     config_file = Path(platformdirs.user_config_dir("ionworks")) / "config.yml"
     if config_file.exists():
         with open(config_file, "r") as f:
             config = yaml.safe_load(f)
         libraries = config.get("ionworks", {}).get("libraries", {})
-        for library in libraries:
-            if library["library"] == library_name:
-                return library["key"]
+        return libraries
+    sys.tracebacklimit = 0
+    raise FileNotFoundError("\nError: No ionworks configuration file was found.\n")
+
+
+def get_library_key(library_name):
+    """
+    Get the API key from the library configuration.
+    """
+    libraries = read_config_libraries()
+    for library in libraries:
+        if library["library"] == library_name:
+            return library["key"]
     return None
 
 
