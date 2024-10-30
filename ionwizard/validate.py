@@ -13,18 +13,12 @@ def read_config_file():
         with open(config_file, "r") as f:
             config = yaml.safe_load(f)
         return config.get("ionworks", {})
-    return {}
+    sys.tracebacklimit = 0
+    raise FileNotFoundError("\nError: No ionworks configuration file was found.\n")
 
 
 def read_config_libraries():
-    config_file = Path(platformdirs.user_config_dir("ionworks")) / "config.yml"
-    if config_file.exists():
-        with open(config_file, "r") as f:
-            config = yaml.safe_load(f)
-        libraries = config.get("ionworks", {}).get("libraries", {})
-        return libraries
-    sys.tracebacklimit = 0
-    raise FileNotFoundError("\nError: No ionworks configuration file was found.\n")
+    return read_config_file().get("libraries", {})
 
 
 def get_library_key(library_name):
