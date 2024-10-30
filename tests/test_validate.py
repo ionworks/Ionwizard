@@ -1,5 +1,6 @@
-from ionwizard.validate import get_library_key, license_check
+from ionwizard.validate import get_library_key, license_check, machine_id_check
 from tempfile import TemporaryDirectory
+import machineid
 import yaml
 import os
 
@@ -29,6 +30,7 @@ def test_get_library_key(mocker):
 
 
 def test_validate(mocker):
+    mocker.patch("ionwizard.validate.machine_id_check", return_value={})
     mocker.patch("ionwizard.validate.get_library_key", return_value="VALID-KEY-123")
     mocker.patch(
         "requests.post",
@@ -70,3 +72,15 @@ def test_validate(mocker):
         "success": False,
         "message": "Error: Failed to validate license key",
     }
+
+
+def test_machine_id(mocker):
+    mocker.patch(
+        "ionwizard.validate.read_config_file",
+        return_value={"machine_id": machineid.id()},
+    )
+    assert machine_id_check()["success"]
+    mocker.patch(
+        "ionwizard.validate.read_config_file", return_value={"machine_id": "123"}
+    )
+    assert not machine_id_check()["success"]

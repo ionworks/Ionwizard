@@ -4,17 +4,21 @@ import yaml
 from pathlib import Path
 import requests
 from ionwizard.env_variables import KEYGEN_ACCOUNT_ID
+import machineid
 
 
-def read_config_libraries():
+def read_config_file():
     config_file = Path(platformdirs.user_config_dir("ionworks")) / "config.yml"
     if config_file.exists():
         with open(config_file, "r") as f:
             config = yaml.safe_load(f)
-        libraries = config.get("ionworks", {}).get("libraries", {})
-        return libraries
+        return config.get("ionworks", {})
     sys.tracebacklimit = 0
     raise FileNotFoundError("\nError: No ionworks configuration file was found.\n")
+
+
+def read_config_libraries():
+    return read_config_file().get("libraries", {})
 
 
 def get_library_key(library_name):
@@ -28,7 +32,7 @@ def get_library_key(library_name):
     return None
 
 
-def license_check(library_name, custom_library_key=None):
+def license_check(library_name, custom_library_key=None, check_machine_id=True):
     """
     Check if the license for the library is valid.
 
@@ -40,6 +44,9 @@ def license_check(library_name, custom_library_key=None):
         The library key to use for the license check. If not provided, the library key
         will be retrieved from the library configuration.
     """
+    if check_machine_id:
+        machine_id_check()
+
     if custom_library_key is not None:
         library_key = custom_library_key
     else:
@@ -75,3 +82,11 @@ def license_check(library_name, custom_library_key=None):
             return {"success": False, "message": "Error: Invalid license key"}
     else:
         return {"success": False, "message": "Error: Failed to validate license key"}
+
+
+def machine_id_check():
+    config = read_config_file()
+    machine_id = machineid.id()
+    if config.get("machine_id") != machine_id:
+        return {"success": False, "message": "Error: Machine ID mismatch"}
+    return {"success": True, "message": "Machine ID is valid"}
