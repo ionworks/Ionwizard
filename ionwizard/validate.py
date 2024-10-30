@@ -14,7 +14,7 @@ def read_config_libraries():
         libraries = config.get("ionworks", {}).get("libraries", {})
         return libraries
     sys.tracebacklimit = 0
-    raise FileNotFoundError("No ionworks configuration file was found.")
+    raise FileNotFoundError("\nError: No ionworks configuration file was found.\n")
 
 
 def get_library_key(library_name):
