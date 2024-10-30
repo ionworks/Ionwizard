@@ -25,7 +25,7 @@ dev = [
 [project.scripts]
 ionwizard-library = "ionwizard.library_wizard:run"
 ionwizard-container = "ionwizard.container_wizard:run"
-ionwizard-install-local = "ionwizard.install_local:run"
+ionwizard-install = "ionwizard.install_local:run"
 
 [tool.setuptools_scm]
 
