@@ -12,7 +12,7 @@ def read_config_libraries():
             config = yaml.safe_load(f)
         libraries = config.get("ionworks", {}).get("libraries", {})
         return libraries
-    return {}
+    raise FileNotFoundError("No ionworks configuration file was found")
 
 
 def get_library_key(library_name):
