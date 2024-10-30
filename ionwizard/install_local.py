@@ -29,16 +29,25 @@ class IonWorksInstallWizard(IonWorksPipWizard):
             original_pyproject_toml = toml.load(f)
         return copy.deepcopy(original_pyproject_toml)
 
-    @staticmethod
-    def install_libraries_from_config(libraries, pyproject_file):
-        for idx, dep in enumerate(pyproject_file["project"]["dependencies"]):
+    def install_libraries_from_config(self, libraries):
+        pyproject_file = self.copy_local_pyproject_file()
+        remaining_dependencies = []
+        local_dependencies = []
+        lib_names = [lib["library"] for lib in libraries]
+        for dep in pyproject_file["project"]["dependencies"]:
+            if dep.split("==")[0] in lib_names:
+                local_dependencies.append(dep)
+            else:
+                remaining_dependencies.append(dep)
+
+        for dep in local_dependencies:
             for library in libraries:
                 if dep.startswith(library["library"]):
-                    # Remove the dependency from the list to be installed from pip
-                    del pyproject_file["project"]["dependencies"][idx]
-                    # Install the library from the license config
                     addr = IonWorksPipWizard.get_address(library["key"])
                     IonWorksPipWizard.install_library(dep, addr)
+
+        pyproject_file["project"]["dependencies"] = remaining_dependencies
+        return pyproject_file
 
     @staticmethod
     def install_from_pyproject(pyproject_file):
@@ -58,8 +67,7 @@ class IonWorksInstallWizard(IonWorksPipWizard):
 
 def run():
     libraries = IonWorksInstallWizard().collect_libraries_to_install()
-    new_pyproject = IonWorksInstallWizard.copy_local_pyproject_file()
-    IonWorksInstallWizard.install_libraries_from_config(libraries, new_pyproject)
+    new_pyproject = IonWorksInstallWizard().install_libraries_from_config(libraries)
     IonWorksInstallWizard.install_from_pyproject(new_pyproject)
 
 
