@@ -73,8 +73,14 @@ def test_validate(mocker):
         "message": "Error: Failed to validate license key",
     }
 
+
 def test_machine_id(mocker):
-    mocker.patch("ionwizard.validate.read_config_file", return_value={"machine_id": machineid.id()})
+    mocker.patch(
+        "ionwizard.validate.read_config_file",
+        return_value={"machine_id": machineid.id()},
+    )
     assert machine_id_check()["success"]
-    mocker.patch("ionwizard.validate.read_config_file", return_value={"machine_id": "123"})
+    mocker.patch(
+        "ionwizard.validate.read_config_file", return_value={"machine_id": "123"}
+    )
     assert not machine_id_check()["success"]
