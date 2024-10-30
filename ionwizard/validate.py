@@ -1,3 +1,4 @@
+import sys
 import platformdirs
 import yaml
 from pathlib import Path
@@ -12,7 +13,8 @@ def read_config_libraries():
             config = yaml.safe_load(f)
         libraries = config.get("ionworks", {}).get("libraries", {})
         return libraries
-    raise FileNotFoundError("No ionworks configuration file was found")
+    sys.tracebacklimit = 0
+    raise FileNotFoundError("No ionworks configuration file was found.")
 
 
 def get_library_key(library_name):
