@@ -81,7 +81,6 @@ def test_machine_id(mocker):
     )
     assert machine_id_check()["success"]
     mocker.patch(
-        "ionwizard.validate.read_config_file",
-        return_value={"machine_id": "123"}
+        "ionwizard.validate.read_config_file", return_value={"machine_id": "123"}
     )
     assert not machine_id_check()["success"]
