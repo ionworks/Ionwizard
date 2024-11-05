@@ -1,8 +1,6 @@
 import sys
 import yaml
 import subprocess
-from pathlib import Path
-from platformdirs import user_config_dir
 from ionwizard.write_config import WriteConfig
 from ionwizard.env_variables import KEYGEN_ACCOUNT_ID
 
@@ -41,9 +39,7 @@ class IonWorksPipWizard:
 
     @staticmethod
     def save_config(config):
-        config_dir = Path(user_config_dir("ionworks"))
-        config_dir.mkdir(parents=True, exist_ok=True)
-        config_path = config_dir / "config.yml"
+        config_path = WriteConfig.get_config_path()
         print(f"\nSaving configuration to {config_path}\n")
         WriteConfig.save_config(config, config_path)
 
