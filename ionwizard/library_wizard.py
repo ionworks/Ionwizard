@@ -34,7 +34,7 @@ class IonWorksPipWizard:
 
     @staticmethod
     def process_config(file_name):
-        with open(file_name, "r") as f:
+        with open(file_name) as f:
             config = yaml.safe_load(f)
         if "libraries" not in config:
             raise ValueError("Invalid configuration file.")
