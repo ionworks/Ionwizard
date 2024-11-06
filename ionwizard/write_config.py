@@ -23,9 +23,12 @@ class WriteConfig:
 
     @staticmethod
     def create_config_for(product: str, use_pip_conf: bool = True):
-        license_key = None
         if use_pip_conf:
             license_key = WriteConfig.read_pip_conf()
+        else:
+            raise NotImplementedError(
+                "Configs can only be created from pip.conf files."
+            )
         return {
             "libraries": {"library": product, "key": license_key, "install": "false"}
         }
