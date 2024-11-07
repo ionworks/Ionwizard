@@ -3,11 +3,6 @@
 The library installation wizard is used to install python packages from
 the ionworks package servers.
 
-Script command:
-```bash
-python library_wizard.py <your_config_file>.yml
-```
-Command line alias:
 ```bash
 ionwizard-library <your_config_file>.yml
 ```

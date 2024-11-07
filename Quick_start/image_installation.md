@@ -1,21 +1,16 @@
 # Container wizard
 
-## Installation
+## Starting a container
 
 The container installation wizard is used to run Docker images from
 the ionworks package servers.
 
-Script command:
-```bash
-python container_wizard.py <your_config_file>.yml
-```
-Command line alias:
 ```bash
 ionwizard-container <your_config_file>.yml
 ```
 
 Ionwizard will download the image, create a container, and start the
-software. The image can be access here: http://localhost:8888/tree
+software. The image can be access here: http://localhost:4040/tree
 
 ## System requirements
 
