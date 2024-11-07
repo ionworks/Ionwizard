@@ -65,7 +65,7 @@ def license_check(library_name, custom_library_key=None, check_machine_id=True):
     }
 
     # Data to send in the POST request
-    data = {"meta": {"key": library_key}}
+    data = {"meta": {"key": library_key, "scope": {"user": user_email}}}
 
     # Send the POST request
     response = requests.post(url, headers=headers, json=data)
@@ -90,3 +90,7 @@ def machine_id_check():
     if config.get("machine_id") != machine_id:
         return {"success": False, "message": "Error: Machine ID mismatch"}
     return {"success": True, "message": "Machine ID is valid"}
+
+
+if __name__ == "__main__":
+    print(license_check("ionworkspipeline"))

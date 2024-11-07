@@ -29,8 +29,6 @@ class IonWorksPipWizard:
             addr = IonWorksPipWizard.get_address(library["key"])
             if library["install"]:
                 IonWorksPipWizard.install_library(library["library"], addr)
-            else:
-                print(f'\n{library["library"]} --index-url {addr}\n')
 
     @staticmethod
     def process_config(file_name):
@@ -49,8 +47,6 @@ class IonWorksPipWizard:
         if "user_id" not in config:
             config["user_id"] = str(uuid.uuid4())
         config["machine_id"] = machineid.id()
-
-        print(f"\nSaving configuration to {config_path}\n")
 
         with open(config_path, "w") as f:
             yaml.dump({"ionworks": config}, f)
