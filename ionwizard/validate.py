@@ -49,8 +49,10 @@ def license_check(library_name, custom_library_key=None, check_machine_id=True):
         machine_id_check()
 
     if custom_library_key is not None:
+        config = {}
         library_key = custom_library_key
     else:
+        config = read_config_file()
         library_key = get_library_key(library_name)
 
     if library_key is None:
@@ -66,14 +68,18 @@ def license_check(library_name, custom_library_key=None, check_machine_id=True):
     }
 
     # Data to send in the POST request
-    data = {"meta": {"key": library_key, "scope": {"user": user_email}}}
+    data = {"meta": {"key": library_key}}
+
+    # Some keys are scoped to a user email
+    user_email = config.get("user_email")
+    if user_email is not None:
+        data["meta"]["scope"] = {"user": user_email}
 
     # Send the POST request
     response = requests.post(url, headers=headers, json=data)
 
     # Check if the request was successful
     if response.status_code == 200:
-        # Print the response content
         data = response.json()
         if data["meta"]["code"] == "VALID":
             return {"success": True, "message": "License key is valid"}
