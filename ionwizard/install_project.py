@@ -25,7 +25,7 @@ class IonWorksInstallWizard(IonWorksPipWizard):
 
     @staticmethod
     def copy_local_pyproject_file():
-        with open("pyproject.toml", "r") as f:
+        with open("pyproject.toml") as f:
             original_pyproject_toml = toml.load(f)
         return copy.deepcopy(original_pyproject_toml)
 

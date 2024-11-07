@@ -10,11 +10,12 @@ import machineid
 def read_config_file():
     config_file = Path(platformdirs.user_config_dir("ionworks")) / "config.yml"
     if config_file.exists():
-        with open(config_file, "r") as f:
+        with open(config_file) as f:
             config = yaml.safe_load(f)
         return config.get("ionworks", {})
     sys.tracebacklimit = 0
-    raise FileNotFoundError("\nError: No ionworks configuration file was found.\n")
+    print("")
+    raise FileNotFoundError("No ionworks configuration file was found.\n")
 
 
 def read_config_libraries():

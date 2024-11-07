@@ -1,10 +1,7 @@
 import sys
-import subprocess
 import yaml
-from platformdirs import user_config_dir
-from pathlib import Path
-import machineid
-import uuid
+import subprocess
+from ionwizard.write_config import WriteConfig
 from ionwizard.env_variables import KEYGEN_ACCOUNT_ID
 
 
@@ -34,7 +31,7 @@ class IonWorksPipWizard:
 
     @staticmethod
     def process_config(file_name):
-        with open(file_name, "r") as f:
+        with open(file_name) as f:
             config = yaml.safe_load(f)
         if "libraries" not in config:
             raise ValueError("Invalid configuration file.")
@@ -42,18 +39,9 @@ class IonWorksPipWizard:
 
     @staticmethod
     def save_config(config):
-        config_dir = Path(user_config_dir("ionworks"))
-        config_dir.mkdir(parents=True, exist_ok=True)
-        config_path = config_dir / "config.yml"
-
-        if "user_id" not in config:
-            config["user_id"] = str(uuid.uuid4())
-        config["machine_id"] = machineid.id()
-
+        config_path = WriteConfig.get_config_path()
         print(f"\nSaving configuration to {config_path}\n")
-
-        with open(config_path, "w") as f:
-            yaml.dump({"ionworks": config}, f)
+        WriteConfig.save_config(config, config_path)
 
 
 def run():
