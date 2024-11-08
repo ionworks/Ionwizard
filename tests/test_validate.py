@@ -38,6 +38,7 @@ def test_validate(mocker):
             status_code=200, json=lambda: {"meta": {"code": "VALID"}}
         ),
     )
+    mocker.patch("ionwizard.validate.read_config_file", return_value={})
 
     result = license_check("testlib")
     assert result == {"success": True, "message": "License key is valid"}

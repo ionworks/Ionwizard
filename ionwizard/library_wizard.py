@@ -26,8 +26,6 @@ class IonWorksPipWizard:
             addr = IonWorksPipWizard.get_address(library["key"])
             if library["install"]:
                 IonWorksPipWizard.install_library(library["library"], addr)
-            else:
-                print(f'\n{library["library"]} --index-url {addr}\n')
 
     @staticmethod
     def process_config(file_name):
@@ -40,7 +38,6 @@ class IonWorksPipWizard:
     @staticmethod
     def save_config(config):
         config_path = WriteConfig.get_config_path()
-        print(f"\nSaving configuration to {config_path}\n")
         WriteConfig.save_config(config, config_path)
 
 
