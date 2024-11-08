@@ -7,8 +7,12 @@ from ionwizard.env_variables import KEYGEN_ACCOUNT_ID
 import machineid
 
 
+def get_config_path():
+    return Path(platformdirs.user_config_dir("ionworks")) / "config.yml"
+
+
 def read_config_file():
-    config_file = Path(platformdirs.user_config_dir("ionworks")) / "config.yml"
+    config_file = get_config_path()
     if config_file.exists():
         with open(config_file) as f:
             config = yaml.safe_load(f)
@@ -49,10 +53,8 @@ def license_check(library_name, custom_library_key=None, check_machine_id=True):
         machine_id_check()
 
     if custom_library_key is not None:
-        config = {}
         library_key = custom_library_key
     else:
-        config = read_config_file()
         library_key = get_library_key(library_name)
 
     if library_key is None:
@@ -70,10 +72,7 @@ def license_check(library_name, custom_library_key=None, check_machine_id=True):
     # Data to send in the POST request
     data = {"meta": {"key": library_key}}
 
-    # Some keys are scoped to a user email
-    user_email = config.get("user_email")
-    if user_email is not None:
-        data["meta"]["scope"] = {"user": user_email}
+    data = add_email_to(data)
 
     # Send the POST request
     response = requests.post(url, headers=headers, json=data)
@@ -89,6 +88,14 @@ def license_check(library_name, custom_library_key=None, check_machine_id=True):
             return {"success": False, "message": "Error: Invalid license key"}
     else:
         return {"success": False, "message": "Error: Failed to validate license key"}
+
+
+def add_email_to(data):
+    if get_config_path().exists():
+        user_email = read_config_file().get("user_email")
+        if user_email is not None:
+            data["meta"]["scope"] = {"user": user_email}
+    return data
 
 
 def machine_id_check():
