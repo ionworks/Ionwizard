@@ -97,7 +97,3 @@ def machine_id_check():
     if config.get("machine_id") != machine_id:
         return {"success": False, "message": "Error: Machine ID mismatch"}
     return {"success": True, "message": "Machine ID is valid"}
-
-
-if __name__ == "__main__":
-    print(license_check("ionworkspipeline"))
