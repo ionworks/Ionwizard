@@ -71,8 +71,8 @@ def license_check(library_name, custom_library_key=None, check_machine_id=True):
 
     # Data to send in the POST request
     data = {"meta": {"key": library_key}}
-
-    data = add_email_to(data)
+    if custom_library_key is None:
+        data = add_email_to(data)
 
     # Send the POST request
     response = requests.post(url, headers=headers, json=data)
