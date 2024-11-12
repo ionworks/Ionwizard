@@ -1,7 +1,7 @@
-import sys
 import copy
-import subprocess
 import toml
+import argparse
+import subprocess
 from ionwizard.validate import read_config_libraries
 from ionwizard.library_wizard import IonWorksPipWizard
 import tempfile
@@ -14,12 +14,10 @@ class IonWorksInstallWizard(IonWorksPipWizard):
     dependencies separately.
     """
 
-    def collect_libraries_to_install(self):
-        if len(sys.argv) > 1:
-            if ".yml" in sys.argv[1]:
-                config_file = sys.argv[1]
-                processed_config = self.process_config(config_file)
-                self.save_config(processed_config)
+    def collect_libraries_to_install(self, config_name: str | None = None):
+        if config_name:
+            processed_config = self.process_config(config_name)
+            self.save_config(processed_config)
         libraries = read_config_libraries()
         return libraries
 
@@ -50,25 +48,30 @@ class IonWorksInstallWizard(IonWorksPipWizard):
         return pyproject_file
 
     @staticmethod
-    def install_from_pyproject(pyproject_file):
+    def install_from_pyproject(pyproject_file, pip_arguments):
+        if not pip_arguments:
+            pip_arguments = ["."]
         with tempfile.TemporaryDirectory() as temp_dir:
             temp_config = Path(temp_dir) / "pyproject.toml"
             with open(temp_config, "w") as f:
                 toml.dump(pyproject_file, f)
-            cmd = [
-                "pip",
-                "install",
-                "-e",
-                ".",
-                f"--config-settings=pyproject_toml={temp_config}",
-            ]
+            cmd = (
+                ["pip", "install"]
+                + pip_arguments
+                + [f"--config-settings=pyproject_toml={temp_config}"]
+            )
             subprocess.run(cmd)
 
 
 def run():
-    libraries = IonWorksInstallWizard().collect_libraries_to_install()
+    parser = argparse.ArgumentParser()
+    parser.add_argument("-c", type=str, required=False)
+    config_args, pip_args = parser.parse_known_args()
+    config_name = config_args.c
+
+    libraries = IonWorksInstallWizard().collect_libraries_to_install(config_name)
     new_pyproject = IonWorksInstallWizard().install_libraries_from_config(libraries)
-    IonWorksInstallWizard.install_from_pyproject(new_pyproject)
+    IonWorksInstallWizard.install_from_pyproject(new_pyproject, pip_args)
 
 
 if __name__ == "__main__":
