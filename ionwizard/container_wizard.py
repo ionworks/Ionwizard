@@ -1,9 +1,9 @@
 import os
 import yaml
-import argparse
 import subprocess
 import webbrowser
 from tempfile import TemporaryDirectory
+from input_args import get_arguments
 
 
 class IonWorksImageWizard:
@@ -117,11 +117,7 @@ class IonWorksImageWizard:
 
 def run():
     try:
-        parser = argparse.ArgumentParser()
-        parser.add_argument("-c", type=str, required=False)
-        config_args, _ = parser.parse_known_args()
-        config_file = config_args.c
-
+        config_file, _ = get_arguments()
         IonWorksImageWizard.install_from(
             IonWorksImageWizard.process_config(config_file)
         )

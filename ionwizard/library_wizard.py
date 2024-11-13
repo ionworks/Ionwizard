@@ -1,8 +1,8 @@
 import yaml
-import argparse
 import subprocess
 from ionwizard.write_config import WriteConfig
 from ionwizard.env_variables import KEYGEN_ACCOUNT_ID
+from ionwizard.input_args import get_arguments
 
 
 class IonWorksPipWizard:
@@ -43,11 +43,7 @@ class IonWorksPipWizard:
 
 def run():
     try:
-        parser = argparse.ArgumentParser()
-        parser.add_argument("-c", type=str, required=False)
-        config_args, _ = parser.parse_known_args()
-        config_file = config_args.c
-
+        config_file, _ = get_arguments()
         processed_config = IonWorksPipWizard.process_config(config_file)
         IonWorksPipWizard.install_from(processed_config)
         IonWorksPipWizard.save_config(processed_config)
