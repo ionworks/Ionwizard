@@ -47,8 +47,8 @@ def run():
         processed_config = IonWorksPipWizard.process_config(config_file)
         IonWorksPipWizard.install_from(processed_config)
         IonWorksPipWizard.save_config(processed_config)
-    except (IndexError, FileNotFoundError):
-        print("\nUsage:\n\tpython library_wizard.py <config file>\n")
+    except (IndexError, FileNotFoundError, TypeError):
+        print("\nUsage:\n\tionwizard-library -c <config file>\n")
 
 
 if __name__ == "__main__":
