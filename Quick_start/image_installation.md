@@ -6,7 +6,7 @@ The container installation wizard is used to run Docker images from
 the ionworks package servers.
 
 ```bash
-ionwizard-container <your_config_file>.yml
+ionwizard-container -c <your_config_file>.yml
 ```
 
 Ionwizard will download the image, create a container, and start the

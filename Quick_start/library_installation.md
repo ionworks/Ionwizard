@@ -4,7 +4,7 @@ The library installation wizard is used to install python packages from
 the ionworks package servers.
 
 ```bash
-ionwizard-library <your_config_file>.yml
+ionwizard-library -c <your_config_file>.yml
 ```
 
 ## Configuration file
