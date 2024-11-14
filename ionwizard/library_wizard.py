@@ -1,8 +1,8 @@
-import sys
 import yaml
 import subprocess
 from ionwizard.write_config import WriteConfig
 from ionwizard.env_variables import KEYGEN_ACCOUNT_ID
+from ionwizard.input_args import get_arguments
 
 
 class IonWorksPipWizard:
@@ -43,12 +43,12 @@ class IonWorksPipWizard:
 
 def run():
     try:
-        config_file = sys.argv[1]
+        config_file, _ = get_arguments()
         processed_config = IonWorksPipWizard.process_config(config_file)
         IonWorksPipWizard.install_from(processed_config)
         IonWorksPipWizard.save_config(processed_config)
-    except (IndexError, FileNotFoundError):
-        print("\nUsage:\n\tpython library_wizard.py <config file>\n")
+    except (IndexError, FileNotFoundError, TypeError):
+        print("\nUsage:\n\tionwizard-library -c <config file>\n")
 
 
 if __name__ == "__main__":

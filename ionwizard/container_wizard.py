@@ -1,9 +1,9 @@
 import os
-import sys
-import subprocess
 import yaml
+import subprocess
 import webbrowser
 from tempfile import TemporaryDirectory
+from ionwizard.input_args import get_arguments
 
 
 class IonWorksImageWizard:
@@ -117,12 +117,12 @@ class IonWorksImageWizard:
 
 def run():
     try:
-        config_file = sys.argv[1]
+        config_file, _ = get_arguments()
         IonWorksImageWizard.install_from(
             IonWorksImageWizard.process_config(config_file)
         )
-    except (IndexError, FileNotFoundError):
-        print("\nUsage:\n\tpython container_wizard.py <config file>\n")
+    except (IndexError, FileNotFoundError, TypeError):
+        print("\nUsage:\n\tionwizard-container -c <config file>\n")
 
 
 if __name__ == "__main__":

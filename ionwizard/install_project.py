@@ -1,11 +1,11 @@
 import copy
 import toml
-import argparse
 import subprocess
 from ionwizard.validate import read_config_libraries
 from ionwizard.library_wizard import IonWorksPipWizard
 import tempfile
 from pathlib import Path
+from ionwizard.input_args import get_arguments
 
 
 class IonWorksInstallWizard(IonWorksPipWizard):
@@ -64,11 +64,7 @@ class IonWorksInstallWizard(IonWorksPipWizard):
 
 
 def run():
-    parser = argparse.ArgumentParser()
-    parser.add_argument("-c", type=str, required=False)
-    config_args, pip_args = parser.parse_known_args()
-    config_name = config_args.c
-
+    config_name, pip_args = get_arguments()
     libraries = IonWorksInstallWizard().collect_libraries_to_install(config_name)
     new_pyproject = IonWorksInstallWizard().install_libraries_from_config(libraries)
     IonWorksInstallWizard.install_from_pyproject(new_pyproject, pip_args)
