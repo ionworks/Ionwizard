@@ -8,14 +8,7 @@ def find_outdated(library_config):
     licenses, package_names = get_packages_and_keys(library_config)
     cleaned_output = ["\nThe following ionworks packages can be updated:\n"]
     for key in licenses:
-        cmd = ["pip", "list", "--outdated"]
-        if key:
-            cmd += ["--index-url", f"{IonWorksPipWizard.get_address(key)}"]
-        result = subprocess.run(
-            cmd,
-            capture_output=True,
-        )
-        output = result.stdout.decode("UTF-8").split("\n")
+        output = get_outdated_from_pip(key)
         for line in output:
             split_line = line.split()
             if (
@@ -28,6 +21,18 @@ def find_outdated(library_config):
     cleaned_output.append("\n")
     if outdated_found:
         print("".join(cleaned_output))
+
+
+def get_outdated_from_pip(key):
+    cmd = ["pip", "list", "--outdated"]
+    if key:
+        cmd += ["--index-url", f"{IonWorksPipWizard.get_address(key)}"]
+    result = subprocess.run(
+        cmd,
+        capture_output=True,
+    )
+    output = result.stdout.decode("UTF-8").split("\n")
+    return output
 
 
 def get_packages_and_keys(library_config):
