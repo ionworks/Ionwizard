@@ -40,7 +40,7 @@ class IonWorksInstallWizard(IonWorksPipWizard):
                     IonWorksPipWizard.install_library(dep, addr)
 
         pyproject_file["project"]["dependencies"] = remaining_dependencies
-        return pyproject_file, local_dependencies
+        return pyproject_file
 
     @staticmethod
     def split_dependencies(libraries, pyproject_file):
@@ -73,9 +73,9 @@ class IonWorksInstallWizard(IonWorksPipWizard):
 def run():
     config_name, pip_args = get_arguments()
     libraries = IonWorksInstallWizard().collect_libraries_to_install(config_name)
-    new_pyproject, iw_libs = IonWorksInstallWizard().install_libraries_from_config(libraries)
+    new_pyproject = IonWorksInstallWizard().install_libraries_from_config(libraries)
     IonWorksInstallWizard.install_from_pyproject(new_pyproject, pip_args)
-    find_outdated(iw_libs)
+    find_outdated(libraries)
 
 
 if __name__ == "__main__":
