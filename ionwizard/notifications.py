@@ -5,10 +5,7 @@ from ionwizard.library_wizard import IonWorksPipWizard
 
 def find_outdated(library_config):
     outdated_found = False
-    lib_info = {lib["library"]: lib["key"] for lib in library_config}
-    lib_info.update({"ionwizard": None})
-    package_names = list(lib_info.keys())
-    licenses = list(lib_info.values())
+    licenses, package_names = get_packages_and_keys(library_config)
     cleaned_output = ["\nThe following ionworks packages can be updated:\n"]
     for key in licenses:
         cmd = ["pip", "list", "--outdated"]
@@ -31,3 +28,11 @@ def find_outdated(library_config):
     cleaned_output.append("\n")
     if outdated_found:
         print("".join(cleaned_output))
+
+
+def get_packages_and_keys(library_config):
+    lib_info = {lib["library"]: lib["key"] for lib in library_config}
+    lib_info.update({"ionwizard": None})
+    package_names = list(lib_info.keys())
+    licenses = list(lib_info.values())
+    return licenses, package_names
