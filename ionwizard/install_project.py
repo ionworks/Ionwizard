@@ -6,6 +6,7 @@ from ionwizard.library_wizard import IonWorksPipWizard
 import tempfile
 from pathlib import Path
 from ionwizard.input_args import get_arguments
+from ionwizard.notifications import find_outdated
 
 
 class IonWorksInstallWizard(IonWorksPipWizard):
@@ -18,8 +19,7 @@ class IonWorksInstallWizard(IonWorksPipWizard):
         if config_name:
             processed_config = self.process_config(config_name)
             self.save_config(processed_config)
-        libraries = read_config_libraries()
-        return libraries
+        return read_config_libraries()
 
     @staticmethod
     def copy_local_pyproject_file():
@@ -29,14 +29,9 @@ class IonWorksInstallWizard(IonWorksPipWizard):
 
     def install_libraries_from_config(self, libraries):
         pyproject_file = self.copy_local_pyproject_file()
-        remaining_dependencies = []
-        local_dependencies = []
-        lib_names = [lib["library"] for lib in libraries]
-        for dep in pyproject_file["project"]["dependencies"]:
-            if dep.split("==")[0] in lib_names:
-                local_dependencies.append(dep)
-            else:
-                remaining_dependencies.append(dep)
+        local_dependencies, remaining_dependencies = self.split_dependencies(
+            libraries, pyproject_file
+        )
 
         for dep in local_dependencies:
             for library in libraries:
@@ -46,6 +41,18 @@ class IonWorksInstallWizard(IonWorksPipWizard):
 
         pyproject_file["project"]["dependencies"] = remaining_dependencies
         return pyproject_file
+
+    @staticmethod
+    def split_dependencies(libraries, pyproject_file):
+        remaining_dependencies = []
+        local_dependencies = []
+        lib_names = [lib["library"] for lib in libraries]
+        for dep in pyproject_file["project"]["dependencies"]:
+            if dep.split("==")[0] in lib_names:
+                local_dependencies.append(dep)
+            else:
+                remaining_dependencies.append(dep)
+        return local_dependencies, remaining_dependencies
 
     @staticmethod
     def install_from_pyproject(pyproject_file, pip_arguments):
@@ -68,6 +75,7 @@ def run():
     libraries = IonWorksInstallWizard().collect_libraries_to_install(config_name)
     new_pyproject = IonWorksInstallWizard().install_libraries_from_config(libraries)
     IonWorksInstallWizard.install_from_pyproject(new_pyproject, pip_args)
+    find_outdated(libraries)
 
 
 if __name__ == "__main__":
