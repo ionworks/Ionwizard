@@ -3,6 +3,7 @@ import sys
 import json
 import base64
 import pathlib
+import ionwizard
 from typing import Any
 from nacl.signing import VerifyKey
 from nacl.exceptions import BadSignatureError
@@ -10,7 +11,8 @@ from nacl.exceptions import BadSignatureError
 
 class VerifyOfflineLicense:
     @classmethod
-    def verify_offline(cls, license_path: str | pathlib.Path) -> dict[str, Any]:
+    def verify_offline(cls) -> dict[str, Any]:
+        license_path = ionwizard.validate.get_license_key_path()
         return cls.verify_license(
             cls.decode_license(cls.get_license_file(license_path))
         )
