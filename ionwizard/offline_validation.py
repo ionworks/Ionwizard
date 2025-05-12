@@ -46,8 +46,7 @@ class VerifyOfflineLicense:
 
     @staticmethod
     def get_license_file(license_path: str | pathlib.Path) -> str:
-        license_file = ""
-        if pathlib.Path(license_file).exists():
+        if pathlib.Path(license_path).exists():
             with open(license_path) as f:
                 license_file = f.read()
         else:
