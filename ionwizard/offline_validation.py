@@ -10,12 +10,13 @@ from nacl.exceptions import BadSignatureError
 
 class VerifyOfflineLicense:
     @classmethod
-    def verify_offline(cls, license_path: str | pathlib.Path):
-        cls.verify_license(cls.decode_license(cls.get_license_file(license_path)))
+    def verify_offline(cls, license_path: str | pathlib.Path) -> dict[str, Any]:
+        return cls.verify_license(
+            cls.decode_license(cls.get_license_file(license_path))
+        )
 
     @staticmethod
-    def verify_license(decoded_license: dict[str, Any]):
-        success = True
+    def verify_license(decoded_license: dict[str, Any]) -> dict[str, Any]:
         try:
             verify_key = VerifyKey(
                 bytes.fromhex(os.environ["IONWORKS_OFFLINE_PUBLIC_KEY"]),
@@ -24,12 +25,10 @@ class VerifyOfflineLicense:
                 ("license/%s" % decoded_license["enc"]).encode(),
                 base64.b64decode(decoded_license["sig"]),
             )
+            return {"success": True, "message": "License key is valid"}
         except (ValueError, AssertionError, BadSignatureError):
-            success = False
-        if not success:
-            sys.tracebacklimit = 0
-            print("")
-            raise ValueError("Verification failed!")
+            pass
+        return {"success": False, "message": "Error: Failed to validate license key"}
 
     @staticmethod
     def decode_license(license_file: str) -> dict[str, Any]:
