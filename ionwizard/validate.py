@@ -11,10 +11,6 @@ def get_config_path() -> Path:
     return Path(platformdirs.user_config_dir("ionworks")) / "config.yml"
 
 
-def get_license_key_path() -> Path:
-    return Path(platformdirs.user_config_dir("ionworks")) / "ionworks_license_key"
-
-
 def read_config_file():
     config_file = get_config_path()
     if config_file.exists():

@@ -3,18 +3,23 @@ import sys
 import json
 import base64
 import pathlib
-import ionwizard
+import platformdirs
 from typing import Any
 from nacl.signing import VerifyKey
 from nacl.exceptions import BadSignatureError
 
 
+def get_license_key_path() -> pathlib.Path:
+    return (
+        pathlib.Path(platformdirs.user_config_dir("ionworks")) / "ionworks_license_key"
+    )
+
+
 class VerifyOfflineLicense:
     @classmethod
     def verify_offline(cls) -> dict[str, Any]:
-        license_path = ionwizard.validate.get_license_key_path()
         return cls.verify_license(
-            cls.decode_license(cls.get_license_file(license_path))
+            cls.decode_license(cls.get_license_file(get_license_key_path()))
         )
 
     @staticmethod
@@ -24,7 +29,7 @@ class VerifyOfflineLicense:
                 bytes.fromhex(os.environ["IONWORKS_OFFLINE_PUBLIC_KEY"]),
             )
             verify_key.verify(
-                ("license/%s" % decoded_license["enc"]).encode(),
+                f"license/{decoded_license['enc']}".encode(),
                 base64.b64decode(decoded_license["sig"]),
             )
             return {"success": True, "message": "License key is valid"}
