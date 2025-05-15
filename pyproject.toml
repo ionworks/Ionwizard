@@ -1,7 +1,3 @@
-[build-system]
-requires = ["setuptools", "setuptools-scm"]
-build-backend = "setuptools.build_meta"
-
 [project]
 name = "ionwizard"
 description = "Installation tools for Ionworks software"
@@ -27,8 +23,6 @@ dev = [
 ionwizard-library = "ionwizard.library_wizard:run"
 ionwizard-container = "ionwizard.container_wizard:run"
 ionwizard-install = "ionwizard.install_project:run"
-
-[tool.setuptools_scm]
 
 [tool.setuptools.packages.find]
 include = ["ionwizard"]
