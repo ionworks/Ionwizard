@@ -1,12 +1,13 @@
 import copy
 import toml
-import subprocess
-from ionwizard.validate import read_config_libraries
-from ionwizard.library_wizard import IonWorksPipWizard
 import tempfile
+import subprocess
 from pathlib import Path
 from ionwizard.input_args import get_arguments
 from ionwizard.notifications import find_outdated
+from ionwizard.validate import read_config_libraries
+from ionwizard.library_wizard import IonWorksPipWizard
+from ionwizard.offline_validation import VerifyOfflineLicense
 
 
 class IonWorksInstallWizard(IonWorksPipWizard):
@@ -71,10 +72,12 @@ class IonWorksInstallWizard(IonWorksPipWizard):
 
 
 def run():
-    config_name, pip_args = get_arguments()
+    config_name, offline_license, pip_args = get_arguments()
     libraries = IonWorksInstallWizard().collect_libraries_to_install(config_name)
     new_pyproject = IonWorksInstallWizard().install_libraries_from_config(libraries)
     IonWorksInstallWizard.install_from_pyproject(new_pyproject, pip_args)
+    if offline_license:
+        VerifyOfflineLicense.install_offline_license(offline_license)
     find_outdated(libraries)
 
 

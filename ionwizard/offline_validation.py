@@ -16,6 +16,11 @@ def get_license_key_path() -> pathlib.Path:
 
 
 class VerifyOfflineLicense:
+    @staticmethod
+    def install_offline_license(file_name: str):
+        pass
+
+
     @classmethod
     def verify_offline(cls) -> dict[str, Any]:
         return cls.verify_license(

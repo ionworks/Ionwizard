@@ -117,7 +117,7 @@ class IonWorksImageWizard:
 
 def run():
     try:
-        config_file, _ = get_arguments()
+        config_file, _, _ = get_arguments()
         IonWorksImageWizard.install_from(
             IonWorksImageWizard.process_config(config_file)
         )
