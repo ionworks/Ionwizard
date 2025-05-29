@@ -8,3 +8,4 @@ __pycache__
 *.tar.gz
 build
 .venv
+_version.py
