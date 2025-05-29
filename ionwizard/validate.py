@@ -7,7 +7,7 @@ from ionwizard.env_variables import KEYGEN_ACCOUNT_ID
 import machineid
 
 
-def get_config_path():
+def get_config_path() -> Path:
     return Path(platformdirs.user_config_dir("ionworks")) / "config.yml"
 
 

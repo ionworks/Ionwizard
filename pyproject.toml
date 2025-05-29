@@ -18,6 +18,7 @@ dependencies = [
     "requests",
     "py-machineid",
     "toml",
+    "pynacl",
 ]
 
 [project.optional-dependencies]
