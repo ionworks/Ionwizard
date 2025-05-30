@@ -25,7 +25,8 @@ class IonWorksImageWizard:
             ["curl", "-sSLO", "--output-dir", location, "-L", web_address, "-u", key]
         )
         if err != 0:
-            raise RuntimeError(f"\nInstallation failed for {lib_name}.\n")
+            m = f"\nInstallation failed for {lib_name}.\n"
+            raise RuntimeError(m)
 
     @staticmethod
     def load_image(product, location):
@@ -34,7 +35,8 @@ class IonWorksImageWizard:
             ["docker", "load", "-i", os.path.join(location, zip_name)]
         )
         if err != 0:
-            raise RuntimeError(f"\nDocker loading failed for {product}.\n")
+            m = f"\nDocker loading failed for {product}.\n"
+            raise RuntimeError(m)
 
     @staticmethod
     def run_image(product, key, version):
@@ -53,7 +55,8 @@ class IonWorksImageWizard:
             ]
         )
         if err not in IonWorksImageWizard.acceptable_codes:
-            raise RuntimeError(f"\nFailed to start {product}.\n")
+            m = f"\nFailed to start {product}.\n"
+            raise RuntimeError(m)
 
     @staticmethod
     def restart_image(product):
@@ -67,7 +70,8 @@ class IonWorksImageWizard:
                 ]
             )
             if err not in IonWorksImageWizard.acceptable_codes:
-                raise RuntimeError(f"\nFailed to start {product}.\n")
+                m = f"\nFailed to start {product}.\n"
+                raise RuntimeError(m)
         except KeyboardInterrupt:
             subprocess.call(
                 [
@@ -117,7 +121,7 @@ class IonWorksImageWizard:
 
 def run():
     try:
-        config_file, _ = get_arguments()
+        config_file, _, _ = get_arguments()
         IonWorksImageWizard.install_from(
             IonWorksImageWizard.process_config(config_file)
         )

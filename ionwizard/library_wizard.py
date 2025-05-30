@@ -43,7 +43,7 @@ class IonWorksPipWizard:
 
 def run():
     try:
-        config_file, _ = get_arguments()
+        config_file, _, _ = get_arguments()
         processed_config = IonWorksPipWizard.process_config(config_file)
         IonWorksPipWizard.install_from(processed_config)
         IonWorksPipWizard.save_config(processed_config)

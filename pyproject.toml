@@ -1,19 +1,24 @@
 [build-system]
-requires = ["setuptools", "setuptools-scm"]
-build-backend = "setuptools.build_meta"
+requires = [
+    "hatchling",
+    "hatch-vcs",
+]
+build-backend = "hatchling.build"
 
 [project]
 name = "ionwizard"
 description = "Installation tools for Ionworks software"
-dynamic = ["version", "readme"]
-license = {file = "LICENSE.md"}
 requires-python = ">=3.10"
+dynamic = ["version"]
+license = { file = "LICENSE.md" }
+readme = {file = "README.md", content-type = "text/markdown"}
 dependencies = [
     "pyyaml",
     "platformdirs",
     "requests",
     "py-machineid",
     "toml",
+    "pynacl",
 ]
 
 [project.optional-dependencies]
@@ -27,11 +32,7 @@ ionwizard-library = "ionwizard.library_wizard:run"
 ionwizard-container = "ionwizard.container_wizard:run"
 ionwizard-install = "ionwizard.install_project:run"
 
-[tool.setuptools_scm]
-
-[tool.setuptools.packages.find]
-include = ["ionwizard"]
-
-[tool.setuptools.dynamic]
-version = {attr = "ionwizard.version.__version__"}
-readme = {file = ["README.md"], content-type = "text/markdown"}
+[tool.hatch]
+version.source = "vcs"
+version.fallback-version = "0.0.0"
+build.hooks.vcs.version-file = "ionwizard/_version.py"
