@@ -2,6 +2,7 @@ import os
 import sys
 import json
 import base64
+import shutil
 import pathlib
 import platformdirs
 from typing import Any
@@ -18,7 +19,11 @@ def get_license_key_path() -> pathlib.Path:
 class VerifyOfflineLicense:
     @staticmethod
     def install_offline_license(file_name: str):
-        pass
+        if os.path.exists(file_name):
+            shutil.copyfile(file_name, get_license_key_path())
+        else:
+            m = f"{file_name} does not exist"
+            raise FileNotFoundError(m)
 
 
     @classmethod
