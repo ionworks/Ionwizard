@@ -25,7 +25,6 @@ class VerifyOfflineLicense:
             m = f"{file_name} does not exist"
             raise FileNotFoundError(m)
 
-
     @classmethod
     def verify_offline(cls) -> dict[str, Any]:
         return cls.verify_license(
